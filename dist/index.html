@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PolyGlot | Modern Translator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            --card-bg: rgba(255, 255, 255, 0.8);
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-main);
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 32px;
+            padding: 40px;
+            box-shadow: var(--glass-shadow);
+            animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 30px;
+            background: linear-gradient(to right, #6366f1, #a855f7);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        label {
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        textarea {
+            width: 100%;
+            height: 140px;
+            padding: 20px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            background: white;
+            resize: none;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            outline: none;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+        }
+
+        .controls {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        select {
+            flex: 1;
+            padding: 14px 20px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            background: white;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            outline: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 18px;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border-radius: 16px;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            flex: 1.5;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.35);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-icon {
+            background: white;
+            color: var(--text-main);
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-icon:hover:not(:disabled) {
+            background: #f1f5f9;
+            transform: scale(1.05);
+        }
+
+        .btn-icon:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .output-area {
+            min-height: 140px;
+            padding: 20px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            background: rgba(248, 250, 252, 0.5);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .placeholder-text {
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .spinner {
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(99, 102, 241, 0.1);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .recording-pulse {
+            background: #fecaca !important;
+            color: #ef4444 !important;
+            border-color: #fca5a5 !important;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+            70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+
+        .error-msg {
+            color: #ef4444;
+            font-size: 0.85rem;
+            text-align: center;
+            margin-top: -12px;
+            margin-bottom: 20px;
+            animation: shake 0.4s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-4px); }
+            75% { transform: translateX(4px); }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 24px;
+            }
+            h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>PolyGlot</h1>
+
+    <div class="section">
+        <label>
+            English
+            <button id="micBtn" class="btn-icon" title="Voice Input (English)">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                    <line x1="12" y1="19" x2="12" y2="23"></line>
+                    <line x1="8" y1="23" x2="16" y2="23"></line>
+                </svg>
+            </button>
+        </label>
+        <textarea id="inputText" placeholder="Type something to translate..."></textarea>
+    </div>
+
+    <div class="controls">
+        <select id="langSelect">
+            <option value="fi" data-speech="fi-FI">Finnish</option>
+            <option value="bn" data-speech="bn-BD">Bangla</option>
+            <option value="fa" data-speech="fa-IR">Persian</option>
+        </select>
+        <button id="translateBtn" class="btn btn-primary">
+            <span>Translate</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m9 18 6-6-6-6"></path>
+            </svg>
+        </button>
+    </div>
+
+    <div id="errorBox" class="error-msg" style="display: none;"></div>
+
+    <div class="section">
+        <label>
+            <span id="targetLangLabel">Finnish</span>
+            <div style="display: flex; gap: 8px;">
+                <button id="copyBtn" class="btn-icon" title="Copy Translation">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                </button>
+                <button id="speakBtn" class="btn-icon" title="Listen" disabled>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                    </svg>
+                </button>
+            </div>
+        </label>
+        <div id="outputText" class="output-area">
+            <span class="placeholder-text">Translation will appear here...</span>
+        </div>
+    </div>
+</div>
+
+<script>
+    const inputText = document.getElementById('inputText');
+    const outputText = document.getElementById('outputText');
+    const langSelect = document.getElementById('langSelect');
+    const targetLangLabel = document.getElementById('targetLangLabel');
+    const translateBtn = document.getElementById('translateBtn');
+    const micBtn = document.getElementById('micBtn');
+    const speakBtn = document.getElementById('speakBtn');
+    const copyBtn = document.getElementById('copyBtn');
+    const errorBox = document.getElementById('errorBox');
+
+    let translatedResult = "";
+
+    // Target Language Label update
+    langSelect.addEventListener('change', () => {
+        targetLangLabel.textContent = langSelect.options[langSelect.selectedIndex].text;
+    });
+
+    // Translation Logic
+    translateBtn.addEventListener('click', async () => {
+        const text = inputText.value.trim();
+        if (!text) {
+            showError("Please enter some text.");
+            return;
+        }
+        hideError();
+
+        const targetLang = langSelect.value;
+        const originalBtnContent = translateBtn.innerHTML;
+        
+        translateBtn.disabled = true;
+        translateBtn.innerHTML = '<div class="spinner"></div>';
+        outputText.innerHTML = '<div style="display:flex; justify-content:center; align-items:center; height:100%"><div class="spinner"></div></div>';
+
+        try {
+            const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|${targetLang}`);
+            const data = await res.json();
+            
+            if (data.responseData) {
+                translatedResult = data.responseData.translatedText;
+                outputText.textContent = translatedResult;
+                speakBtn.disabled = false;
+            } else {
+                throw new Error("Translation failed");
+            }
+        } catch (err) {
+            showError("Connection error. Try again.");
+            outputText.innerHTML = '<span class="placeholder-text">Translation failed...</span>';
+        } finally {
+            translateBtn.disabled = false;
+            translateBtn.innerHTML = originalBtnContent;
+        }
+    });
+
+    // Speech-to-Text
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'en-US';
+
+        micBtn.addEventListener('click', () => {
+            recognition.start();
+            micBtn.classList.add('recording-pulse');
+        });
+
+        recognition.onresult = (event) => {
+            const transcript = event.results[0][0].transcript;
+            inputText.value = transcript;
+        };
+
+        recognition.onend = () => {
+            micBtn.classList.remove('recording-pulse');
+        };
+
+        recognition.onerror = () => {
+            micBtn.classList.remove('recording-pulse');
+            showError("Voice input failed.");
+        };
+    } else {
+        micBtn.style.display = 'none';
+        console.warn("Speech Recognition not supported");
+    }
+
+    // Text-to-Speech
+    speakBtn.addEventListener('click', () => {
+        if (!translatedResult) return;
+        const utterance = new SpeechSynthesisUtterance(translatedResult);
+        utterance.lang = langSelect.options[langSelect.selectedIndex].getAttribute('data-speech');
+        window.speechSynthesis.speak(utterance);
+    });
+
+    // Copy Content
+    copyBtn.addEventListener('click', () => {
+        if (!translatedResult) return;
+        navigator.clipboard.writeText(translatedResult);
+        const originalIcon = copyBtn.innerHTML;
+        copyBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="%2310b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">%3Cpolyline points="20 6 9 17 4 12"%3E%3C/polyline%3E%3C/svg%3E';
+        setTimeout(() => copyBtn.innerHTML = originalIcon, 2000);
+    });
+
+    function showError(msg) {
+        errorBox.textContent = msg;
+        errorBox.style.display = 'block';
+    }
+
+    function hideError() {
+        errorBox.style.display = 'none';
+    }
+</script>
+
+</body>
+</html>
